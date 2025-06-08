@@ -1,0 +1,3 @@
+[submodule "sorting-algorithms"]
+	path = sorting-algorithms
+	url = https://github.com/samicpp/sorting-algorithms.git
