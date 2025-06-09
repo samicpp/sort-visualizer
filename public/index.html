@@ -1,1 +1,23 @@
-<input>
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="/style.css"/>
+    </head>
+    <body>
+        <div class="display"> <canvas></canvas> </div>
+        <div class="input">
+            <input type="file"/> <br/> 
+            <select>
+                <option value="/unsorted/shuffled-100.json">100 shuffled numbers</option>
+                <option value="/unsorted/shuffled-100000.json">100 000 shuffled numbers</option>
+                <option value="/unsorted/shuffled-100000.json">100 000 numbers in reversed order</option>
+            </select>
+            <select>
+                <option value="quickSort">quick sort</option>
+            </select>
+            <button>sort</button>
+        </div>
+        <div class="view"> <pre></pre> </div>
+        <script src="/main.js" type="module"></script>
+    </body>
+</html>

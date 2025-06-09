@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "./public/jsort",
+    "target": "ES2024",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "module": "ESNext"
+  },
+  "include": ["sorting-algorithms/typescript/mod.ts"]
+}
