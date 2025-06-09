@@ -6,7 +6,7 @@ window.wasm=wasm;
 window.sort=sort;
 const canvas=document.querySelector("canvas");
 const view=document.querySelector(".view").children[0];
-const [inp,_br0,sel,met,btn,_br1,del,_br2,acc]=document.querySelector(".input").children;
+const [inp,_br0,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4]=document.querySelector(".input").children;
 
 const ctx=canvas.getContext("2d");
 // const input = [5, 3, 2, 4, 1];
@@ -19,7 +19,10 @@ canvas.width=window.innerWidth*0.99;
 canvas.height=window.innerHeight*0.60;
 
 window.ctx=ctx;
-console.log("canvas,view,inp,_br0,sel,met,btn",canvas,view,inp,sel,met,btn);
+console.log(
+    "canvas,view,inp,_br0,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4",
+    canvas,view,inp,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4
+);
 
 inp.onchange=async function(){
     const f=inp.files[0],fn=inp.value;
@@ -43,87 +46,109 @@ sel.onchange=async function(){
 }
 
 btn.onclick=async function(){
-    const mode=met.value;
-    const json=await fetch(sel.value).then(r=>r.json());
-    const arr=json.list;
-    const delay=parseFloat(del.value);
-    const useWasm=acc.checked;
-    ;
-    let sorted=arr;
-    let red=[],green=[];
+    btn.disabled=true;
+
+    try{
+        const mode=met.value;
+        const json=await fetch(sel.value).then(r=>r.json());
+        const arr=json.list;
+        const delay=parseFloat(del.value);
+        const useWasm=acc.checked;
+        const sound=sou.checked;
+        ;
+        let sorted=arr;
+        let red=[],green=[];
+        let max=arr[0],min=arr[0];
 
 
-    console.log("button pressed",mode,json);
+        console.log("button pressed",mode,json);
+
+        for(const i of arr){
+            max=i<max?max:i;
+            min=i>min?min:i;
+        };
 
 
-    if(!useWasm){
-        sort[mode+"Debug"].get=async function(index){
-            red.push(index);
-            return this.workArr[index];
-        }
-        sort[mode+"Debug"].next=async function(){
-            draw(this.workArr,red,green);
-            red.length=0;
+        if(!useWasm){
+            sort[mode+"Debug"].get=async function(index){
+                red.push(index);
+                const v=this.workArr[index];
+                const freq=valueToFreq(v,min,max);
+                if(sound)playTone(freq,delay);
+                return v;
+            }
+            sort[mode+"Debug"].next=async function(){
+                draw(this.workArr,max,red,green);
+                red.length=0;
+                await new Promise(r=>setTimeout(r,delay));
+            };
+            sorted=await sort[mode+"Debug"].number(arr);    
+        }else if(useWasm){
+            //draw(arr);
+            //await new Promise(r=>setTimeout(r,delay));
+            sorted=wasm[mode](arr);
+        };
+        
+        // if(mode=="quickSort"&&!useWasm){
+        //     sort.quickSortDebug.get=async function(index){
+        //         red.push(index);
+        //         return this.workArr[index];
+        //     }
+        //     sort.quickSortDebug.next=async function(){
+        //         draw(this.workArr,red,green);
+        //         red.length=0;
+        //         await new Promise(r=>setTimeout(r,delay));
+        //     };
+        //     sorted=await sort.quickSortDebug.number(arr);    
+        // }else if(mode=="quickSort"&&useWasm){
+        //     //draw(arr);
+        //     //await new Promise(r=>setTimeout(r,delay));
+        //     sorted=wasm.quickSort(arr);
+        // }
+        
+        // else if(mode=="mergeSort"&&!useWasm){
+        //     sort.mergeSortDebug.get=async function(index){
+        //         red.push(index);
+        //         return this.workArr[index];
+        //     }
+        //     sort.mergeSortDebug.next=async function(){
+        //         draw(this.workArr,red,green);
+        //         red.length=0;
+        //         await new Promise(r=>setTimeout(r,delay));
+        //     };
+        //     sorted=await sort.mergeSortDebug.number(arr);    
+        // }else if(mode=="mergeSort"&&useWasm){
+        //     //draw(arr);
+        //     //await new Promise(r=>setTimeout(r,delay));
+        //     sorted=wasm.mergeSort(arr);
+        // }
+        
+        ;
+
+
+        for(let i=0;i<sorted.length;i++){
+            green.push(i);
+            draw(sorted,max,red,green);
+            const freq=valueToFreq(sorted[i],min,max);
+            if(sound)playTone(freq,delay);
             await new Promise(r=>setTimeout(r,delay));
         };
-        sorted=await sort[mode+"Debug"].number(arr);    
-    }else if(useWasm){
-        //draw(arr);
-        //await new Promise(r=>setTimeout(r,delay));
-        sorted=wasm[mode](arr);
-    };
-    
-    // if(mode=="quickSort"&&!useWasm){
-    //     sort.quickSortDebug.get=async function(index){
-    //         red.push(index);
-    //         return this.workArr[index];
-    //     }
-    //     sort.quickSortDebug.next=async function(){
-    //         draw(this.workArr,red,green);
-    //         red.length=0;
-    //         await new Promise(r=>setTimeout(r,delay));
-    //     };
-    //     sorted=await sort.quickSortDebug.number(arr);    
-    // }else if(mode=="quickSort"&&useWasm){
-    //     //draw(arr);
-    //     //await new Promise(r=>setTimeout(r,delay));
-    //     sorted=wasm.quickSort(arr);
-    // }
-    
-    // else if(mode=="mergeSort"&&!useWasm){
-    //     sort.mergeSortDebug.get=async function(index){
-    //         red.push(index);
-    //         return this.workArr[index];
-    //     }
-    //     sort.mergeSortDebug.next=async function(){
-    //         draw(this.workArr,red,green);
-    //         red.length=0;
-    //         await new Promise(r=>setTimeout(r,delay));
-    //     };
-    //     sorted=await sort.mergeSortDebug.number(arr);    
-    // }else if(mode=="mergeSort"&&useWasm){
-    //     //draw(arr);
-    //     //await new Promise(r=>setTimeout(r,delay));
-    //     sorted=wasm.mergeSort(arr);
-    // }
-    
-    ;
 
-
-    for(let i=0;i<sorted.length;i++){
-        green.push(i);
-        draw(sorted,red,green);
-        await new Promise(r=>setTimeout(r,delay));
-    };
-
+    }
+    catch(err){
+        console.error(err);
+    }
+    finally{
+        btn.disabled=false;
+    }
 };
 
-function draw(arr=[1],redIndex=[],greenIndex=[]){
+function draw(arr=[1],largest=arr[0],redIndex=[],greenIndex=[]){
     ctx.fillStyle="black";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
-    let largest=arr[0];
-    arr.forEach(e=>{ if(e>largest)largest=e; });
+    //let largest=arr[0];
+    //arr.forEach(e=>{ if(e>largest)largest=e; });
 
     const scale=canvas.height/largest;
     const barWidth=canvas.width/arr.length;
@@ -141,6 +166,26 @@ function draw(arr=[1],redIndex=[],greenIndex=[]){
         else if(greenIndex.includes(i))ctx.fillStyle="green";
         ctx.fill();
     };
+};
+
+const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+
+function valueToFreq(value, minVal, maxVal, minFreq = 100, maxFreq = 1000) {
+    const norm = (value - minVal) / (maxVal - minVal);
+    return minFreq + norm * (maxFreq - minFreq);
+};
+function playTone(freq, duration = 100) {
+    const oscillator=audioCtx.createOscillator();
+    const gainNode=audioCtx.createGain();
+
+    oscillator.type="sine"; 
+    oscillator.frequency.value=freq;
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime+duration/1000);
 };
 
 
