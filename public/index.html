@@ -8,14 +8,26 @@
         <div class="input">
             <input type="file"/> <br/> 
             <select>
+                <option value="/unsorted/shuffled-10.json">10 shuffled numbers</option>
                 <option value="/unsorted/shuffled-100.json">100 shuffled numbers</option>
-                <option value="/unsorted/shuffled-100000.json">100 000 shuffled numbers</option>
-                <option value="/unsorted/shuffled-100000.json">100 000 numbers in reversed order</option>
+                <option value="/unsorted/shuffled-1000.json">1000 shuffled numbers</option>
+                <option value="/unsorted/shuffled-10000.json">10,000 shuffled numbers</option>
+
+                <option value="/unsorted/worst-10.json">10 numbers in reversed order</option>
+                <option value="/unsorted/worst-100.json">100 numbers in reversed order</option>
+                <option value="/unsorted/worst-1000.json">1000 numbers in reversed order</option>
+                <option value="/unsorted/worst-10000.json">10,000 numbers in reversed order</option>
+                <!-- <option value="/unsorted/shuffled-100000.json">100 000 shuffled numbers</option> -->
+                <!-- <option value="/unsorted/shuffled-100000.json">100 000 numbers in reversed order</option> -->
             </select>
             <select>
                 <option value="quickSort">quick sort</option>
+                <option value="mergeSort">merge sort</option>
+                <option value="heapSort">heap sort</option>
             </select>
-            <button>sort</button>
+            <button>sort</button> <br/>
+            milisecond delay between iterations: <input type="number" value="50"/> <br/>
+            use accelerated sorting (no animation): <input type="checkbox"/> <br/>
         </div>
         <div class="view"> <pre></pre> </div>
         <script src="/main.js" type="module"></script>

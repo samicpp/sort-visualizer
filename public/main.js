@@ -6,7 +6,7 @@ window.wasm=wasm;
 window.sort=sort;
 const canvas=document.querySelector("canvas");
 const view=document.querySelector(".view").children[0];
-const [inp,_br0,sel,met,btn]=document.querySelector(".input").children;
+const [inp,_br0,sel,met,btn,_br1,del,_br2,acc]=document.querySelector(".input").children;
 
 const ctx=canvas.getContext("2d");
 // const input = [5, 3, 2, 4, 1];
@@ -33,32 +33,87 @@ inp.onchange=async function(){
     inp.value="";
 };
 
+sel.onchange=async function(){
+    const json=await fetch(sel.value).then(r=>r.json());
+    const arr=json.list;
+    const delay=parseFloat(del.value);
+
+    await new Promise(r=>setTimeout(r,delay));
+    draw(arr);
+}
+
 btn.onclick=async function(){
     const mode=met.value;
     const json=await fetch(sel.value).then(r=>r.json());
     const arr=json.list;
+    const delay=parseFloat(del.value);
+    const useWasm=acc.checked;
     ;
+    let sorted=arr;
+    let red=[],green=[];
+
 
     console.log("button pressed",mode,json);
 
-    if(mode=="quickSort"){
-        let red=[],green=[];
-        sort.quickSortDebug.get=async function(index){
+
+    if(!useWasm){
+        sort[mode+"Debug"].get=async function(index){
             red.push(index);
             return this.workArr[index];
         }
-        sort.quickSortDebug.next=async function(){
+        sort[mode+"Debug"].next=async function(){
             draw(this.workArr,red,green);
             red.length=0;
-            await new Promise(r=>setTimeout(r,10));
+            await new Promise(r=>setTimeout(r,delay));
         };
-        const sorted=await sort.quickSortDebug.number(arr);
-        
-        for(let i=0;i<sorted.length;i++){
-            green.push(i);
-            draw(sorted,red,green);
-            await new Promise(r=>setTimeout(r,10));
-        };
+        sorted=await sort[mode+"Debug"].number(arr);    
+    }else if(useWasm){
+        //draw(arr);
+        //await new Promise(r=>setTimeout(r,delay));
+        sorted=wasm[mode](arr);
+    };
+    
+    // if(mode=="quickSort"&&!useWasm){
+    //     sort.quickSortDebug.get=async function(index){
+    //         red.push(index);
+    //         return this.workArr[index];
+    //     }
+    //     sort.quickSortDebug.next=async function(){
+    //         draw(this.workArr,red,green);
+    //         red.length=0;
+    //         await new Promise(r=>setTimeout(r,delay));
+    //     };
+    //     sorted=await sort.quickSortDebug.number(arr);    
+    // }else if(mode=="quickSort"&&useWasm){
+    //     //draw(arr);
+    //     //await new Promise(r=>setTimeout(r,delay));
+    //     sorted=wasm.quickSort(arr);
+    // }
+    
+    // else if(mode=="mergeSort"&&!useWasm){
+    //     sort.mergeSortDebug.get=async function(index){
+    //         red.push(index);
+    //         return this.workArr[index];
+    //     }
+    //     sort.mergeSortDebug.next=async function(){
+    //         draw(this.workArr,red,green);
+    //         red.length=0;
+    //         await new Promise(r=>setTimeout(r,delay));
+    //     };
+    //     sorted=await sort.mergeSortDebug.number(arr);    
+    // }else if(mode=="mergeSort"&&useWasm){
+    //     //draw(arr);
+    //     //await new Promise(r=>setTimeout(r,delay));
+    //     sorted=wasm.mergeSort(arr);
+    // }
+    
+    ;
+
+
+    for(let i=0;i<sorted.length;i++){
+        green.push(i);
+        draw(sorted,red,green);
+        await new Promise(r=>setTimeout(r,delay));
     };
 
 };
@@ -89,5 +144,6 @@ function draw(arr=[1],redIndex=[],greenIndex=[]){
 };
 
 
+sel.onchange();
 
 window.draw=draw;
