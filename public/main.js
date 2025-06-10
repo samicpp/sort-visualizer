@@ -154,6 +154,10 @@ btn.onclick=async function(){
         ;
 
 
+        const timeTaken=Date.now()-timeNow;
+        tim.innerText=`${timeTaken/1000}s`;
+        
+
         for(let i=0;i<sorted.length;i++){
             green.push(i);
             draw(sorted,max,red,green);
@@ -162,8 +166,7 @@ btn.onclick=async function(){
             await new Promise(r=>setTimeout(r,delay));
         };
 
-        const timeTaken=Date.now()-timeNow;
-        tim.innerText=`${timeTaken/1000}s`;
+        
     }
     catch(err){
         console.error(err);
