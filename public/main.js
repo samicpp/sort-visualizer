@@ -6,7 +6,7 @@ window.wasm=wasm;
 window.sort=sort;
 const canvas=document.querySelector("canvas");
 const view=document.querySelector(".view").children[0];
-const [inp,_br0,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4]=document.querySelector(".input").children;
+const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4]=document.querySelector(".input").children;
 
 const ctx=canvas.getContext("2d");
 // const input = [5, 3, 2, 4, 1];
@@ -19,9 +19,29 @@ canvas.width=window.innerWidth*0.99;
 canvas.height=window.innerHeight*0.60;
 
 window.ctx=ctx;
+// console.log(
+//     "canvas,view,inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4",
+//     canvas,view,inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4
+// );
 console.log(
-    "canvas,view,inp,_br0,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4",
-    canvas,view,inp,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4
+    "canvas",canvas,
+    "view",view,
+    "inp",inp,
+    "_br0",_br0,
+    "gsm",gsm,
+    "gna",gna,
+    "gbt",gbt,
+    "_br5",_br5,
+    "sel",sel,
+    "met",met,
+    "btn",btn,
+    "_br1",_br1,
+    "del",del,
+    "_br2",_br2,
+    "acc",acc,
+    "_br3",_br3,
+    "sou",sou,
+    "_br4",_br4
 );
 
 inp.onchange=async function(){
@@ -41,8 +61,14 @@ sel.onchange=async function(){
     const arr=json.list;
     const delay=parseFloat(del.value);
 
-    await new Promise(r=>setTimeout(r,delay));
-    draw(arr);
+    let max=arr[0],min=arr[0];
+    for(const i of arr){
+        max=i<max?max:i;
+        min=i>min?min:i;
+    };
+
+    //await new Promise(r=>setTimeout(r,delay));
+    draw(arr,max);
 }
 
 btn.onclick=async function(){
@@ -142,6 +168,49 @@ btn.onclick=async function(){
         btn.disabled=false;
     }
 };
+
+gbt.onclick=async function(){
+    const mode=gsm.value;
+    const amount=parseInt(gna.value);
+
+    if(mode=="shuffled"){
+        const arr=new sort.ShuffledUintArray(amount);
+        const jstring=JSON.stringify({type:"int",list:arr});
+
+        const b=new Blob([jstring]);
+        const u=URL.createObjectURL(b);
+
+        const o=new Option(`${amount} shuffled numbers`,u);
+        sel.append(o);
+    } else if(mode=="random"){
+        const arr=new sort.RandomUintArray(amount);
+        const jstring=JSON.stringify({type:"int",list:arr});
+
+        const b=new Blob([jstring]);
+        const u=URL.createObjectURL(b);
+
+        const o=new Option(`${amount} random numbers`,u);
+        sel.append(o);
+    } else if(mode=="worst"){
+        const arr=Array(amount).fill(0).map((e,i)=>i).reverse();
+        const jstring=JSON.stringify({type:"int",list:arr});
+
+        const b=new Blob([jstring]);
+        const u=URL.createObjectURL(b);
+
+        const o=new Option(`${amount} numbers in reverse order`,u);
+        sel.append(o);
+    } else if(mode=="best"){
+        const arr=Array(amount).fill(0).map((e,i)=>i);
+        const jstring=JSON.stringify({type:"int",list:arr});
+
+        const b=new Blob([jstring]);
+        const u=URL.createObjectURL(b);
+
+        const o=new Option(`${amount} numbers in order`,u);
+        sel.append(o);
+    };
+}
 
 function draw(arr=[1],largest=arr[0],redIndex=[],greenIndex=[]){
     ctx.fillStyle="black";

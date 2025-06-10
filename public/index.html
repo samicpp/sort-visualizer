@@ -2,11 +2,21 @@
 <html>
     <head>
         <link rel="stylesheet" href="/style.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+        <script>eruda.init();</script>
     </head>
     <body>
         <div class="display"> <canvas></canvas> </div>
         <div class="input">
             <input type="file"/> <br/> 
+            <select>
+                <option value="shuffled">shuffled</option>
+                <option value="random">random numbers</option>
+                <option value="worst">reverse order</option>
+                <option value="best">normal order</option>
+            </select>
+            <input type="number" value="50"/>  
+            <button>generate</button> <br/>
             <select>
                 <option value="/unsorted/shuffled-10.json">10 shuffled numbers</option>
                 <option value="/unsorted/shuffled-100.json">100 shuffled numbers</option>
