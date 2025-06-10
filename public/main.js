@@ -102,14 +102,14 @@ btn.onclick=async function(){
                 ;
             };
             sort[mode+"Debug"].get=async function(index){
-                red.push(index);
+                red.push(parseInt(index));
                 const v=this.workArr[index];
                 const freq=valueToFreq(v,min,max);
                 if(sound)playTone(freq,delay);
                 return v;
             };
             sort[mode+"Debug"].set=async function(index,value){
-                cyan.push(index);
+                cyan.push(parseInt(index));
                 //console.log("Set",index);
                 const v=this.workArr[index]=value;
                 // const freq=valueToFreq(v,min,max);
@@ -117,7 +117,7 @@ btn.onclick=async function(){
                 return v;
             };
             sort[mode+"Debug"].next=async function(){
-                console.log(red.length,green.length,cyan.length);
+                // console.log("red,cyan,green",red,green,cyan);
                 draw(this.workArr,max,red,green,cyan);
                 red.length=0; green.length=0; cyan.length=0;
                 await new Promise(r=>setTimeout(r,delay));
@@ -251,8 +251,8 @@ function draw(arr=[1],largest=arr[0],redIndex=[],greenIndex=[],cyanIndex=[]){
         ctx.rect(x,y,barWidth,height);
         ctx.fillStyle="white";
         if(redIndex.includes(i))ctx.fillStyle="red";
-        else if(greenIndex.includes(i))ctx.fillStyle="green";
-        else if(cyanIndex.includes(i))ctx.fillStyle="cyan";
+        if(greenIndex.includes(i))ctx.fillStyle="green";
+        if(cyanIndex.includes(i))ctx.fillStyle="cyan";
         ctx.fill();
     };
 };
