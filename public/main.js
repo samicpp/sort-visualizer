@@ -85,7 +85,7 @@ btn.onclick=async function(){
         const timeNow=Date.now();
         ;
         let sorted=arr;
-        let red=[],green=[];
+        let red=[],green=[],cyan=[];
         let max=arr[0],min=arr[0];
 
 
@@ -104,10 +104,17 @@ btn.onclick=async function(){
                 const freq=valueToFreq(v,min,max);
                 if(sound)playTone(freq,delay);
                 return v;
-            }
+            };
+            sort[mode+"Debug"].set=async function(index,value){
+                cyan.push(index);
+                const v=this.workArr[index]=value;
+                // const freq=valueToFreq(v,min,max);
+                // if(sound)playTone(freq,delay);
+                return v;
+            };
             sort[mode+"Debug"].next=async function(){
-                draw(this.workArr,max,red,green);
-                red.length=0;
+                draw(this.workArr,max,red,green,cyan);
+                red.length=0; green.length=0; cyan.length=0;
                 await new Promise(r=>setTimeout(r,delay));
             };
             sorted=await sort[mode+"Debug"].number(arr);    
@@ -160,7 +167,7 @@ btn.onclick=async function(){
 
         for(let i=0;i<sorted.length;i++){
             green.push(i);
-            draw(sorted,max,red,green);
+            draw(sorted,max,red,green,cyan);
             const freq=valueToFreq(sorted[i],min,max);
             if(sound)playTone(freq,delay);
             await new Promise(r=>setTimeout(r,delay));
@@ -219,7 +226,7 @@ gbt.onclick=async function(){
     };
 }
 
-function draw(arr=[1],largest=arr[0],redIndex=[],greenIndex=[]){
+function draw(arr=[1],largest=arr[0],redIndex=[],greenIndex=[],cyanIndex=[]){
     ctx.fillStyle="black";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
@@ -240,6 +247,7 @@ function draw(arr=[1],largest=arr[0],redIndex=[],greenIndex=[]){
         ctx.fillStyle="white";
         if(redIndex.includes(i))ctx.fillStyle="red";
         else if(greenIndex.includes(i))ctx.fillStyle="green";
+        else if(cyanIndex.includes(i))ctx.fillStyle="cyan";
         ctx.fill();
     };
 };
