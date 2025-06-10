@@ -19,7 +19,7 @@
             <button>generate</button> <br/>
             <select>
                 <option value="/unsorted/shuffled-10.json">10 shuffled numbers</option>
-                <option value="/unsorted/shuffled-100.json">100 shuffled numbers</option>
+                <option value="/unsorted/shuffled-100.json" selected>100 shuffled numbers</option>
                 <option value="/unsorted/shuffled-1000.json">1000 shuffled numbers</option>
                 <option value="/unsorted/shuffled-10000.json">10,000 shuffled numbers</option>
 
@@ -31,7 +31,7 @@
                 <!-- <option value="/unsorted/shuffled-100000.json">100 000 numbers in reversed order</option> -->
             </select>
             <select>
-                <option value="quickSort">quick sort</option>
+                <option value="quickSort" selected>quick sort</option>
                 <option value="mergeSort">merge sort</option>
                 <option value="heapSort">heap sort</option>
                 <option value="radixSort">radix sort</option>
@@ -40,9 +40,9 @@
                 <option value="bogoSort">bogo sort (very very slow. dont go higher than 10)</option>
             </select>
             <button>sort</button> <br/>
-            milisecond delay between iterations: <input type="number" value="50"/> <br/>
+            milisecond delay between iterations: <input type="number" value="10"/> <br/>
             use accelerated sorting (no animation): <input type="checkbox"/> <br/>
-            play varying sounds per item access: <input type="checkbox"/> <br/>
+            play varying sounds per item access: <input type="checkbox" checked/> <br/>
         </div> 
         <br/> <br/>
         <div class="view"> 

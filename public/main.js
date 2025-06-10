@@ -112,8 +112,8 @@ btn.onclick=async function(){
                 cyan.push(parseInt(index));
                 //console.log("Set",index);
                 const v=this.workArr[index]=value;
-                // const freq=valueToFreq(v,min,max);
-                // if(sound)playTone(freq,delay);
+                const freq=valueToFreq(v,min,max);
+                if(sound)playTone(freq,delay);
                 return v;
             };
             sort[mode+"Debug"].next=async function(){
