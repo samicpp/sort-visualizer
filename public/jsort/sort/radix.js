@@ -74,10 +74,11 @@ export const radixSortDebug = new class RadixSortDebug {
             await this.next();
         }
         ;
-        for(let i in arr){
-            await this.set(i,arr[i]);
+        for (let i in arr) {
+            await this.set(i, arr[i]);
             await this.next();
-        };
+        }
+        ;
     }
     async number(arr) {
         let sorted = [...arr];
@@ -89,7 +90,7 @@ export const radixSortDebug = new class RadixSortDebug {
         }
         ;
         for (let exp = 1; Math.floor(largest / exp) > 0; exp *= 10) {
-            //sorted.length = 0;
+            // sorted.length = 0;
             await this.#nSort(sorted, exp);
             await this.checked();
             //[sorted, this.workArr] = [this.workArr, sorted];

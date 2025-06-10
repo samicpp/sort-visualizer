@@ -25,8 +25,15 @@ export const bogoSortDebug = new class BogoSortDebug {
     async number(arr) {
         this.workArr = [...arr];
         while (true) {
-            this.workArr = shuffle(arr);
-            await this.next();
+            //this.workArr = shuffle(arr);
+            for (const i in this.workArr) {
+                const r = Math.floor(Math.random() * this.workArr.length);
+                const v = await this.get(i);
+                await this.set(i, await this.get(r));
+                await this.set(r, v);
+                await this.next();
+            }
+            ;
             await this.checked();
             if (check.number(this.workArr)) {
                 break;

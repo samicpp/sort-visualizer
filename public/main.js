@@ -199,7 +199,7 @@ gbt.onclick=async function(){
         const b=new Blob([jstring]);
         const u=URL.createObjectURL(b);
 
-        const o=new Option(`${amount} shuffled numbers`,u);
+        const o=new Option(`generated: ${amount} shuffled numbers`,u);
         sel.append(o);
     } else if(mode=="random"){
         const arr=new sort.RandomUintArray(amount);
@@ -208,7 +208,7 @@ gbt.onclick=async function(){
         const b=new Blob([jstring]);
         const u=URL.createObjectURL(b);
 
-        const o=new Option(`${amount} random numbers`,u);
+        const o=new Option(`generated: ${amount} random numbers`,u);
         sel.append(o);
     } else if(mode=="worst"){
         const arr=Array(amount).fill(0).map((e,i)=>i).reverse();
@@ -217,7 +217,7 @@ gbt.onclick=async function(){
         const b=new Blob([jstring]);
         const u=URL.createObjectURL(b);
 
-        const o=new Option(`${amount} numbers in reverse order`,u);
+        const o=new Option(`generated: ${amount} numbers in reverse order`,u);
         sel.append(o);
     } else if(mode=="best"){
         const arr=Array(amount).fill(0).map((e,i)=>i);
@@ -226,7 +226,7 @@ gbt.onclick=async function(){
         const b=new Blob([jstring]);
         const u=URL.createObjectURL(b);
 
-        const o=new Option(`${amount} numbers in order`,u);
+        const o=new Option(`generated: ${amount} numbers in order`,u);
         sel.append(o);
     };
 }
