@@ -98,6 +98,9 @@ btn.onclick=async function(){
 
 
         if(!useWasm){
+            sort[mode+"Debug"].checked=async function(){
+                ;
+            };
             sort[mode+"Debug"].get=async function(index){
                 red.push(index);
                 const v=this.workArr[index];
@@ -107,12 +110,14 @@ btn.onclick=async function(){
             };
             sort[mode+"Debug"].set=async function(index,value){
                 cyan.push(index);
+                //console.log("Set",index);
                 const v=this.workArr[index]=value;
                 // const freq=valueToFreq(v,min,max);
                 // if(sound)playTone(freq,delay);
                 return v;
             };
             sort[mode+"Debug"].next=async function(){
+                console.log(red.length,green.length,cyan.length);
                 draw(this.workArr,max,red,green,cyan);
                 red.length=0; green.length=0; cyan.length=0;
                 await new Promise(r=>setTimeout(r,delay));

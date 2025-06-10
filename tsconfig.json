@@ -3,7 +3,7 @@
     "outDir": "./public/jsort",
     "target": "ES2024",
     "allowImportingTsExtensions": true,
-    "noEmit": true,
+    "noEmit": false,
     "module": "ESNext"
   },
   "include": ["sorting-algorithms/typescript/mod.ts"]
