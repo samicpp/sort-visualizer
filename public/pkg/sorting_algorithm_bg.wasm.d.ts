@@ -3,6 +3,7 @@
 export const memory: WebAssembly.Memory;
 export const quick_sort: (a: number, b: number) => void;
 export const radix_sort: (a: number, b: number) => void;
+export const count_sort: (a: number, b: number) => void;
 export const heap_sort: (a: number, b: number) => void;
 export const merge_sort: (a: number, b: number) => void;
 export const bubble_sort: (a: number, b: number) => void;
@@ -14,6 +15,7 @@ export const wquick_sort: (a: number, b: number) => [number, number];
 export const wmerge_sort: (a: number, b: number) => [number, number];
 export const wbubble_sort: (a: number, b: number) => [number, number];
 export const wradix_sort: (a: number, b: number) => [number, number];
+export const wcount_sort: (a: number, b: number) => [number, number];
 export const wheap_sort: (a: number, b: number) => [number, number];
 export const wbogo_sort: (a: number, b: number) => [number, number];
 export const wstalin_sort: (a: number, b: number) => [number, number];
