@@ -7,6 +7,7 @@ window.sort=sort;
 const canvas=document.querySelector("canvas");
 const view=document.querySelector(".view").children[0];
 const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4]=document.querySelector(".input").children;
+const [tim,_br6,spa]=document.querySelector(".view").children;
 
 const ctx=canvas.getContext("2d");
 // const input = [5, 3, 2, 4, 1];
@@ -81,6 +82,7 @@ btn.onclick=async function(){
         const delay=parseFloat(del.value);
         const useWasm=acc.checked;
         const sound=sou.checked;
+        const timeNow=Date.now();
         ;
         let sorted=arr;
         let red=[],green=[];
@@ -160,6 +162,8 @@ btn.onclick=async function(){
             await new Promise(r=>setTimeout(r,delay));
         };
 
+        const timeTaken=Date.now()-timeNow;
+        tim.innerText=`${timeTaken/1000}s`;
     }
     catch(err){
         console.error(err);
