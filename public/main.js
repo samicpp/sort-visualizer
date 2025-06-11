@@ -88,6 +88,16 @@ btn.onclick=async function(){
         let red=[],green=[],cyan=[];
         let max=arr[0],min=arr[0];
 
+        const oscillator=audioCtx.createOscillator();
+        const gainNode=audioCtx.createGain();
+
+        oscillator.type="sine"; 
+        oscillator.frequency.value=0;
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        if(sound)oscillator.start();
 
         console.log("button pressed",mode,json);
 
@@ -105,7 +115,8 @@ btn.onclick=async function(){
                 red.push(parseInt(index));
                 const v=this.workArr[index];
                 const freq=valueToFreq(v,min,max);
-                if(sound)playTone(freq,delay);
+                // if(sound)playTone(freq,delay);
+                oscillator.frequency.value=freq;
                 return v;
             };
             sort[mode+"Debug"].set=async function(index,value){
@@ -113,7 +124,8 @@ btn.onclick=async function(){
                 //console.log("Set",index);
                 const v=this.workArr[index]=value;
                 const freq=valueToFreq(v,min,max);
-                if(sound)playTone(freq,delay);
+                // if(sound)playTone(freq,delay);
+                oscillator.frequency.value=freq;
                 return v;
             };
             sort[mode+"Debug"].next=async function(){
@@ -174,11 +186,12 @@ btn.onclick=async function(){
             green.push(i);
             draw(sorted,max,red,green,cyan);
             const freq=valueToFreq(sorted[i],min,max);
-            if(sound)playTone(freq,delay);
+            // if(sound)playTone(freq,delay);
+            oscillator.frequency.value=freq;
             await new Promise(r=>setTimeout(r,delay));
         };
 
-        
+        oscillator.stop();
     }
     catch(err){
         console.error(err);
