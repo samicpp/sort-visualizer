@@ -86,7 +86,7 @@ async function startHandler(){
         const arr=json.list;
         const delay=parseFloat(del.value);
         const useWasm=acc.checked;
-        const faster=fas.checked;
+        const faster=false;//fas.checked;
         const sound=sou.checked;
         const timeNow=Date.now();
         ;
