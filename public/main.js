@@ -72,8 +72,13 @@ sel.onchange=async function(){
     draw(arr,max);
 }
 
-btn.onclick=async function(){
-    btn.disabled=true;
+let running=false;
+btn.onclick=startHandler;
+async function startHandler(){
+    btn.onclick=stopHandler;
+    btn.innerText="stop";
+    running=true;
+    // btn.disabled=true;
 
     try{
         const mode=met.value;
@@ -132,9 +137,14 @@ btn.onclick=async function(){
                 // console.log("red,cyan,green",red,green,cyan);
                 draw(this.workArr,max,red,green,cyan);
                 red.length=0; green.length=0; cyan.length=0;
+                if(!running)return new Promise(r=>r);
                 await new Promise(r=>setTimeout(r,delay));
             };
-            sorted=await sort[mode+"Debug"].number(arr);    
+            sort[mode+"Debug"].number(arr).then(r=>sorted=r).catch(err=>err);
+            while(arr===sorted&&running){
+                await new Promise(r=>setTimeout(r,delay));
+            };
+            sorted=sort[mode+"Debug"].workArr;
         }else if(useWasm){
             //draw(arr);
             //await new Promise(r=>setTimeout(r,delay));
@@ -181,8 +191,9 @@ btn.onclick=async function(){
         const timeTaken=Date.now()-timeNow;
         tim.innerText=`${timeTaken/1000}s`;
         
-
+        green.push(1);
         for(let i=0;i<sorted.length;i++){
+            if(sorted[i-1]>sorted[i])break;
             green.push(i);
             draw(sorted,max,red,green,cyan);
             const freq=valueToFreq(sorted[i],min,max);
@@ -191,14 +202,29 @@ btn.onclick=async function(){
             await new Promise(r=>setTimeout(r,delay));
         };
 
+        console.log(`stopped by ${running?"sort finish":"user action"}`);
+
         oscillator.stop();
     }
     catch(err){
         console.error(err);
     }
     finally{
-        btn.disabled=false;
+        // btn.disabled=false;
+        running=false;
+        btn.innerText="sort";
+        btn.onclick=startHandler;
     }
+};
+async function stopHandler(){
+    running=false;
+    // try {
+    //     ;
+    // } catch (err) {
+    //     ;
+    // } finally {
+    //     ;
+    // }
 };
 
 gbt.onclick=async function(){

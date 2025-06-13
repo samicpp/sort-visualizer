@@ -3,7 +3,19 @@
     <head>
         <link rel="stylesheet" href="/style.css"/>
         <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-        <script>eruda.init();</script>
+        <script>
+            // eruda.init();
+        </script>
+        <!-- <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+        <script>
+        // VConsole will be exported to `window.VConsole` by default.
+        var vConsole = new window.VConsole();
+        </script> -->
+        <link rel="stylesheet" href="console-panel.css" />
+        <script src="console-panel.js"></script>
+        <script>
+            // consolePanel.enable();
+        </script>
     </head>
     <body>
         <div class="display"> <canvas></canvas> </div>
@@ -48,6 +60,10 @@
         <div class="view"> 
             time taken: <span></span> <br/>
             <pre></pre> 
+        </div> <br/>
+        <div class="debug">
+            <button onclick="consolePanel.enable()">enable console</button>
+            <button onclick="eruda.init()">enable eruda</button>
         </div>
         <script src="/main.js" type="module"></script>
     </body>
