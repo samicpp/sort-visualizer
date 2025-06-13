@@ -98,7 +98,7 @@ async function startHandler(){
         const useWasm=acc.checked;
         const faster=false;//fas.checked;
         const sound=sou.checked;
-        const timeNow=Date.now();
+        const timeNow=performance.now();//Date.now();
         ;
         let sorted=arr;
         let red=[],green=[],cyan=[];
@@ -205,7 +205,7 @@ async function startHandler(){
         ;
 
 
-        const timeTaken=Date.now()-timeNow;
+        const timeTaken=performance.now()-timeNow;
         tim.innerText=`${timeTaken/1000}s`;
         
         green.push(1);
