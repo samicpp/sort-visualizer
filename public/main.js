@@ -77,7 +77,7 @@ sel.onchange=async function(){
 
     //await new Promise(r=>setTimeout(r,delay));
     draw(arr,max);
-    if(wasRunning)startHandler();
+    if(wasRunning)finish=startHandler();
 }
 
 let running=false;
@@ -250,7 +250,7 @@ met.onchange=async function(){
         running=false;
         await finish;
         //await new Promise(r=>setTimeout(r,delay*2));
-        startHandler();
+        finish=startHandler();
     };
 };
 
