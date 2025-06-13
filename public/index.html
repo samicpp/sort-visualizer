@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="/style.css"/>
         <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
         <script>
-            // eruda.init();
+            if(location.hash.includes("eruda"))eruda.init();
         </script>
         <!-- <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
         <script>
@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="console-panel.css" />
         <script src="console-panel.js"></script>
         <script>
-            // consolePanel.enable();
+            if(location.hash.includes("console"))consolePanel.enable();
         </script>
     </head>
     <body>
