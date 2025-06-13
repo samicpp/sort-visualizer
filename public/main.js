@@ -6,7 +6,7 @@ window.wasm=wasm;
 window.sort=sort;
 const canvas=document.querySelector("canvas");
 const view=document.querySelector(".view").children[0];
-const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del,_br2,acc,_br3,sou,_br4]=document.querySelector(".input").children;
+const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del/*,_br6,fas*/,_br2,acc,_br3,sou,_br4]=document.querySelector(".input").children;
 const [tim,_br6,spa]=document.querySelector(".view").children;
 
 const ctx=canvas.getContext("2d");
@@ -86,6 +86,7 @@ async function startHandler(){
         const arr=json.list;
         const delay=parseFloat(del.value);
         const useWasm=acc.checked;
+        const faster=fas.checked;
         const sound=sou.checked;
         const timeNow=Date.now();
         ;
@@ -112,7 +113,7 @@ async function startHandler(){
         };
 
 
-        if(!useWasm){
+        if(!useWasm&&!faster){
             sort[mode+"Debug"].checked=async function(){
                 ;
             };
@@ -149,7 +150,13 @@ async function startHandler(){
             //draw(arr);
             //await new Promise(r=>setTimeout(r,delay));
             sorted=wasm[mode](arr);
-        };
+        }/*else if(faster){
+            sort[mode+"Debug"].number(arr).then(r=>sorted=r).catch(err=>err);
+            while(arr===sorted&&running){
+                await new Promise(r=>setTimeout(r,delay));
+            };
+            sorted=sort[mode+"Debug"].workArr;
+        };*/
         
         // if(mode=="quickSort"&&!useWasm){
         //     sort.quickSortDebug.get=async function(index){
