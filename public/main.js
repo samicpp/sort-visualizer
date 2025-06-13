@@ -6,7 +6,7 @@ window.wasm=wasm;
 window.sort=sort;
 const canvas=document.querySelector("canvas");
 const view=document.querySelector(".view").children[0];
-const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del/*,_br6,fas*/,_br2,acc,_br3,sou,_br4]=document.querySelector(".input").children;
+const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del/*,_br6,fas*/,_br2,acc,_br3,sou,_br4,aut,_br7]=document.querySelector(".input").children;
 const [tim,_br6,spa]=document.querySelector(".view").children;
 
 const ctx=canvas.getContext("2d");
@@ -343,7 +343,18 @@ function playTone(freq, duration = 100) {
     oscillator.stop(audioCtx.currentTime+duration/1000);
 };
 
-
 sel.onchange();
-
 window.draw=draw;
+
+
+while(true){
+    const delay=parseFloat(del.value);
+    await finish;
+    await new Promise(r=>setTimeout(r,delay*2));
+    if(!running&&aut.checked){
+        await new Promise(r=>setTimeout(r,1500));
+        finish=startHandler();
+    };
+}
+
+
