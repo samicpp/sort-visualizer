@@ -58,6 +58,13 @@ inp.onchange=async function(){
 };
 
 sel.onchange=async function(){
+    let wasRunning=running;
+    if(running){
+        running=false;
+        await finish;
+        //await new Promise(r=>setTimeout(r,delay*2));
+    };
+
     const json=await fetch(sel.value).then(r=>r.json());
     const arr=json.list;
     const delay=parseFloat(del.value);
@@ -70,11 +77,14 @@ sel.onchange=async function(){
 
     //await new Promise(r=>setTimeout(r,delay));
     draw(arr,max);
+    if(wasRunning)startHandler();
 }
 
 let running=false;
-btn.onclick=startHandler;
+let finish=new Promise(r=>r());
+btn.onclick=()=>finish=startHandler();
 async function startHandler(){
+    let old=btn.onclick;
     btn.onclick=stopHandler;
     btn.innerText="stop";
     running=true;
@@ -220,7 +230,7 @@ async function startHandler(){
         // btn.disabled=false;
         running=false;
         btn.innerText="sort";
-        btn.onclick=startHandler;
+        btn.onclick=old;
     }
 };
 async function stopHandler(){
@@ -232,6 +242,16 @@ async function stopHandler(){
     // } finally {
     //     ;
     // }
+};
+
+met.onchange=async function(){
+    const delay=parseFloat(del.value);
+    if(running){
+        running=false;
+        await finish;
+        //await new Promise(r=>setTimeout(r,delay*2));
+        startHandler();
+    };
 };
 
 gbt.onclick=async function(){
