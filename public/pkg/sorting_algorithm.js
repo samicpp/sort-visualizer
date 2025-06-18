@@ -90,12 +90,13 @@ export function wbubble_sort(arr) {
 
 /**
  * @param {Int32Array} arr
+ * @param {number} base
  * @returns {Int32Array}
  */
-export function wradix_sort(arr) {
+export function wradix_sort(arr, base) {
     const ptr0 = passArray32ToWasm0(arr, wasm.__wbindgen_malloc);
     const len0 = WASM_VECTOR_LEN;
-    const ret = wasm.wradix_sort(ptr0, len0);
+    const ret = wasm.wradix_sort(ptr0, len0, base);
     var v2 = getArrayI32FromWasm0(ret[0], ret[1]).slice();
     wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
     return v2;

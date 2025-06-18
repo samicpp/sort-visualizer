@@ -3,7 +3,7 @@
 export function wquick_sort(arr: Int32Array): Int32Array;
 export function wmerge_sort(arr: Int32Array): Int32Array;
 export function wbubble_sort(arr: Int32Array): Int32Array;
-export function wradix_sort(arr: Int32Array): Int32Array;
+export function wradix_sort(arr: Int32Array, base: number): Int32Array;
 export function wcount_sort(arr: Int32Array): Int32Array;
 export function wheap_sort(arr: Int32Array): Int32Array;
 export function wbogo_sort(arr: Int32Array): Int32Array;
@@ -14,7 +14,7 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly quick_sort: (a: number, b: number) => void;
-  readonly radix_sort: (a: number, b: number) => void;
+  readonly radix_sort: (a: number, b: number, c: number) => void;
   readonly count_sort: (a: number, b: number) => void;
   readonly heap_sort: (a: number, b: number) => void;
   readonly merge_sort: (a: number, b: number) => void;
@@ -26,7 +26,7 @@ export interface InitOutput {
   readonly wquick_sort: (a: number, b: number) => [number, number];
   readonly wmerge_sort: (a: number, b: number) => [number, number];
   readonly wbubble_sort: (a: number, b: number) => [number, number];
-  readonly wradix_sort: (a: number, b: number) => [number, number];
+  readonly wradix_sort: (a: number, b: number, c: number) => [number, number];
   readonly wcount_sort: (a: number, b: number) => [number, number];
   readonly wheap_sort: (a: number, b: number) => [number, number];
   readonly wbogo_sort: (a: number, b: number) => [number, number];
