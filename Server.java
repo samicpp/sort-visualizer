@@ -51,7 +51,7 @@ public class Server
 
         void handleDir(HttpExchange exchange,Path path)throws IOException{
             System.out.println("<Handler>.handleDir was called");
-            List<Path> paths = Files.walk(path).filter(Files::isRegularFile).collect(Collectors.toList());
+            List<Path> paths = Files.list(path).filter(Files::isRegularFile).collect(Collectors.toList());
             Path picked=null;
             System.out.println(paths);
             String lookfor=(path.toString()+"/index.html").replaceAll("\\\\", "/");
