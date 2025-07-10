@@ -6,7 +6,7 @@ window.wasm=wasm;
 window.sort=sort;
 const canvas=document.querySelector("canvas");
 const view=document.querySelector(".view").children[0];
-const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del/*,_br6,fas*/,_br2,acc,_br3,sou,_br4,aut,_br7]=document.querySelector(".input").children;
+const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del/*,_br6,fas*/,_br2,acc,_br3,sou,_br4,aut,_br7,shf,sht,_br8,rsr,_br9]=document.querySelector(".input").children;
 const [tim,_br6,spa]=document.querySelector(".view").children;
 
 const ctx=canvas.getContext("2d");
@@ -99,6 +99,11 @@ async function startHandler(){
         const faster=false;//fas.checked;
         const sound=sou.checked;
         const timeNow=performance.now();//Date.now();
+        const soundHerz=[
+            parseFloat(shf.value)||200,
+            parseFloat(sht.value)||1000,
+        ];
+        const radixSortRadix=parseInt(rsr.value)||10;
         ;
         let sorted=arr;
         let red=[],green=[],cyan=[];
@@ -130,7 +135,7 @@ async function startHandler(){
             sort[mode+"Debug"].get=async function(index){
                 red.push(parseInt(index));
                 const v=this.workArr[index];
-                const freq=valueToFreq(v,min,max);
+                const freq=valueToFreq(v,min,max,...soundHerz);
                 // if(sound)playTone(freq,delay);
                 oscillator.frequency.value=freq;
                 return v;
@@ -139,7 +144,7 @@ async function startHandler(){
                 cyan.push(parseInt(index));
                 //console.log("Set",index);
                 const v=this.workArr[index]=value;
-                const freq=valueToFreq(v,min,max);
+                const freq=valueToFreq(v,min,max,...soundHerz);
                 // if(sound)playTone(freq,delay);
                 oscillator.frequency.value=freq;
                 return v;
@@ -151,6 +156,7 @@ async function startHandler(){
                 if(!running)return new Promise(r=>r);
                 await new Promise(r=>setTimeout(r,delay));
             };
+            if(mode=="radixSort")sort[mode+"Debug"].base=radixSortRadix;
             sort[mode+"Debug"].number(arr).then(r=>sorted=r).catch(err=>err);
             while(arr===sorted&&running){
                 await new Promise(r=>setTimeout(r,delay));
@@ -213,7 +219,7 @@ async function startHandler(){
             if(sorted[i-1]>sorted[i])break;
             green.push(i);
             draw(sorted,max,red,green,cyan);
-            const freq=valueToFreq(sorted[i],min,max);
+            const freq=valueToFreq(sorted[i],min,max,...soundHerz);
             // if(sound)playTone(freq,delay);
             oscillator.frequency.value=freq;
             await new Promise(r=>setTimeout(r,delay));
@@ -251,6 +257,10 @@ met.onchange=async function(){
         await finish;
         //await new Promise(r=>setTimeout(r,delay*2));
         finish=startHandler();
+    }if(met.value=="radixSort"){
+        rsr.disabled=false;
+    }else{
+        rsr.disabled=true;
     };
 };
 
