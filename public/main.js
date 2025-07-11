@@ -313,8 +313,16 @@ gbt.onclick=async function(){
     };
 }
 
+const barColors={
+    background: "black",
+    idle: "white",
+    access: "red",
+    check: "green",
+    write: "cyan",
+};
+
 function draw(arr=[1],largest=arr[0],redIndex=[],greenIndex=[],cyanIndex=[]){
-    ctx.fillStyle="black";
+    ctx.fillStyle=barColors.background;
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
     //let largest=arr[0];
@@ -331,10 +339,10 @@ function draw(arr=[1],largest=arr[0],redIndex=[],greenIndex=[],cyanIndex=[]){
 
         ctx.beginPath();
         ctx.rect(x,y,barWidth,height);
-        ctx.fillStyle="white";
-        if(redIndex.includes(i))ctx.fillStyle="red";
-        if(greenIndex.includes(i))ctx.fillStyle="green";
-        if(cyanIndex.includes(i))ctx.fillStyle="cyan";
+        ctx.fillStyle=barColors.idle;
+        if(redIndex.includes(i))ctx.fillStyle=barColors.access;
+        if(greenIndex.includes(i))ctx.fillStyle=barColors.check;
+        if(cyanIndex.includes(i))ctx.fillStyle=barColors.write;
         ctx.fill();
     };
 };
@@ -388,6 +396,16 @@ fwf.value=startOptions.get("waveform")||fwf.value;
 aut.checked=or(strToBool(startOptions.get("auto-start")),aut.checked);
 sou.checked=or(strToBool(startOptions.get("sound")),sou.checked);
 acc.checked=or(strToBool(startOptions.get("accelerated")),acc.checked);
+
+ctx.imageSmoothingEnabled=or(strToBool(startOptions.get("smoothing")),true);
+ctx.imageSmoothingQuality=startOptions.get("smoothing-quality")||"low";
+canvas.style.imageRendering=or(strToBool(startOptions.get("pixelated")),false)?"pixelated":"auto";
+
+barColors.background=startOptions.get("background-color")||barColors.background;
+barColors.idle=startOptions.get("idle-color")||barColors.idle;
+barColors.access=startOptions.get("access-color")||barColors.access;
+barColors.check=startOptions.get("check-color")||barColors.check;
+barColors.write=startOptions.get("write-color")||barColors.write;
 
 sel.onchange();
 window.draw=draw;
