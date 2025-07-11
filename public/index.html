@@ -60,12 +60,18 @@
             auto start when not running: <input type="checkbox" checked/> <br/>
             sound frequency range <input type="number" value="200"/> - <input type="number" value="1000"/> <br/>
             radixsort radix <input type="number" value="10" disabled/> <br/>
+            sound waveform <select>
+                <option value="sine">sinusoidal wave</option>
+                <option value="square">square wave</option>
+                <option value="triangle">triangular wave</option>
+                <option value="sawtooth">sawtooth wave</option>
+            </select> <br/>
         </div> 
         <br/> <br/>
         <div class="view"> 
             time taken: <span></span> <br/>
             <pre></pre> 
-        </div> <br/>
+        </div> 
         <div class="debug">
             <button onclick="consolePanel.enable()">enable console</button>
             <button onclick="eruda.init()">enable eruda</button>

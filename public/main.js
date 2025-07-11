@@ -6,7 +6,7 @@ window.wasm=wasm;
 window.sort=sort;
 const canvas=document.querySelector("canvas");
 const view=document.querySelector(".view").children[0];
-const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del/*,_br6,fas*/,_br2,acc,_br3,sou,_br4,aut,_br7,shf,sht,_br8,rsr,_br9]=document.querySelector(".input").children;
+const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del/*,_br6,fas*/,_br2,acc,_br3,sou,_br4,aut,_br7,shf,sht,_br8,rsr,_br9,fwf,_br10]=document.querySelector(".input").children;
 const [tim,_br6,spa]=document.querySelector(".view").children;
 
 const ctx=canvas.getContext("2d");
@@ -103,7 +103,8 @@ async function startHandler(){
             parseFloat(shf.value)||200,
             parseFloat(sht.value)||1000,
         ];
-        const radixSortRadix=parseInt(rsr.value)||10;
+        const radixSortRadix=(()=>{let v=parseInt(rsr.value)||10;return v<2?2:v})();
+        const frequencyWaveForm=fwf.value;
         ;
         let sorted=arr;
         let red=[],green=[],cyan=[];
@@ -112,7 +113,7 @@ async function startHandler(){
         const oscillator=audioCtx.createOscillator();
         const gainNode=audioCtx.createGain();
 
-        oscillator.type="sine"; 
+        oscillator.type=frequencyWaveForm;//||"sine"; 
         oscillator.frequency.value=0;
 
         oscillator.connect(gainNode);
@@ -356,6 +357,7 @@ function playTone(freq, duration = 100) {
 
 sel.onchange();
 window.draw=draw;
+window.startHandler=startHandler;
 
 
 while(true){
