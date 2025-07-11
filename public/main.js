@@ -17,7 +17,7 @@ const ctx=canvas.getContext("2d");
 // const sorted = wasm.quickSort(input);
 // console.log("After sort:", sorted);
 const canvasResolution=parseFloat(startOptions.get("res"))||1080;
-const canvasRatio=(window.innerWidth*0.99)/(window.innerHeight*0.60)
+var canvasRatio=(window.innerWidth*0.99)/(window.innerHeight*0.60)
 // canvas.width=window.innerWidth*0.99;
 // canvas.height=window.innerHeight*0.60;
 canvas.width=canvasResolution;
@@ -412,6 +412,15 @@ window.draw=draw;
 window.startHandler=startHandler;
 
 if(strToBool(startOptions.get("start")))finish=startHandler();
+if(strToBool(startOptions.get("fullscreen"))){
+    canvas.style.position="fixed";
+    canvas.style.top=0;
+    canvas.style.left=0;
+    canvasRatio=window.innerWidth/window.innerHeight;
+    canvas.height=canvas.width*canvasRatio;
+    canvas.style.width="100%";
+    canvas.style.height="100%";
+};
 
 await new Promise(r=>setTimeout(r,2000));
 
