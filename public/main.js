@@ -6,6 +6,7 @@ window.wasm=wasm;
 window.sort=sort;
 const canvas=document.querySelector("canvas");
 const view=document.querySelector(".view").children[0];
+const startOptions=new URL(location.href).searchParams;
 const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del/*,_br6,fas*/,_br2,acc,_br3,sou,_br4,aut,_br7,shf,sht,_br8,rsr,_br9,fwf,_br10]=document.querySelector(".input").children;
 const [tim,_br6,spa]=document.querySelector(".view").children;
 
@@ -15,9 +16,12 @@ const ctx=canvas.getContext("2d");
 
 // const sorted = wasm.quickSort(input);
 // console.log("After sort:", sorted);
-
-canvas.width=window.innerWidth*0.99;
-canvas.height=window.innerHeight*0.60;
+const canvasResolution=parseFloat(startOptions.get("res"))||1080;
+const canvasRatio=(window.innerWidth*0.99)/(window.innerHeight*0.60)
+// canvas.width=window.innerWidth*0.99;
+// canvas.height=window.innerHeight*0.60;
+canvas.width=canvasResolution;
+canvas.height=canvasResolution/canvasRatio;
 
 window.ctx=ctx;
 // console.log(
@@ -354,10 +358,42 @@ function playTone(freq, duration = 100) {
     oscillator.start();
     oscillator.stop(audioCtx.currentTime+duration/1000);
 };
+function strToBool(input){
+    const str=String(input).toLowerCase();
+    
+    if(str=="1")return true;
+    if(str=="0")return false;
+    if(str=="yes")return true;
+    if(str=="no")return false;
+    if(str=="true")return true;
+    if(str=="false")return false;
+    if(str=="enabled")return true;
+    if(str=="disabled")return false;
+    
+    // return false;
+};
+function or(x,y){
+    if(x!==null)return x;
+    return y;
+};
+
+sel.value=startOptions.get("list")||sel.value;
+met.value=startOptions.get("sort")||met.value;
+del.value=startOptions.get("delay")||del.value;
+rsr.value=startOptions.get("radix")||rsr.value;
+shf.value=startOptions.get("min-freq")||shf.value;
+sht.value=startOptions.get("max-freq")||sht.value;
+fwf.value=startOptions.get("waveform")||fwf.value;
+
+aut.checked=or(strToBool(startOptions.get("auto-start")),aut.checked);
+sou.checked=or(strToBool(startOptions.get("sound")),sou.checked);
+acc.checked=or(strToBool(startOptions.get("accelerated")),acc.checked);
 
 sel.onchange();
 window.draw=draw;
 window.startHandler=startHandler;
+
+if(strToBool(startOptions.get("start")))finish=startHandler();
 
 await new Promise(r=>setTimeout(r,2000));
 
