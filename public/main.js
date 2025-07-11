@@ -373,7 +373,7 @@ function strToBool(input){
     // return false;
 };
 function or(x,y){
-    if(x!==null)return x;
+    if(x!=null)return x;
     return y;
 };
 
