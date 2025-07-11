@@ -359,15 +359,14 @@ sel.onchange();
 window.draw=draw;
 window.startHandler=startHandler;
 
+await new Promise(r=>setTimeout(r,2000));
 
 while(true){
     const delay=parseFloat(del.value);
     await finish;
     await new Promise(r=>setTimeout(r,delay*2));
-    if(!running&&aut.checked){
-        await new Promise(r=>setTimeout(r,1500));
-        finish=startHandler();
-    };
+    if(!running&&aut.checked)await new Promise(r=>setTimeout(r,1500));
+    if(!running&&aut.checked)finish=startHandler();
 }
 
 
