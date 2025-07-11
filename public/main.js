@@ -80,8 +80,8 @@ sel.onchange=async function(){
     if(wasRunning)finish=startHandler();
 }
 
-let running=false;
-let finish=new Promise(r=>r());
+var running=false;
+var finish=new Promise(r=>r());
 btn.onclick=()=>finish=startHandler();
 async function startHandler(){
     let old=btn.onclick;
@@ -210,13 +210,14 @@ async function startHandler(){
         
         ;
 
+        running=true;
 
         const timeTaken=performance.now()-timeNow;
         tim.innerText=`${timeTaken/1000}s`;
         
         green.push(1);
         for(let i=0;i<sorted.length;i++){
-            if(sorted[i-1]>sorted[i])break;
+            if(!running||(sorted[i-1]>sorted[i]))break;
             green.push(i);
             draw(sorted,max,red,green,cyan);
             const freq=valueToFreq(sorted[i],min,max,...soundHerz);
