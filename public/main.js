@@ -17,7 +17,7 @@ const ctx=canvas.getContext("2d");
 
 // const sorted = wasm.quickSort(input);
 // console.log("After sort:", sorted);
-const canvasResolution=parseFloat(startOptions.get("res"))||1080;
+const canvasResolution=parseFloat(startOptions.get("res"))||1440;
 var canvasRatio=(window.innerWidth*0.99)/(window.innerHeight*0.60)
 // canvas.width=window.innerWidth*0.99;
 // canvas.height=window.innerHeight*0.60;
@@ -86,10 +86,12 @@ sel.onchange=async function(){
 }
 
 var running=false;
+var checking=false;
 var finish=new Promise(r=>r());
-btn.onclick=()=>finish=startHandler();
+btn.onclick=clickHandler;
+async function clickHandler(){finish=startHandler()};
 async function startHandler(){
-    let old=btn.onclick;
+    // let old=btn.onclick;
     btn.onclick=stopHandler;
     btn.innerText="stop";
     running=true;
@@ -217,21 +219,26 @@ async function startHandler(){
         
         ;
 
-        running=true;
+        checking=true;
+
+        red.length=0;
+        cyan.length=0;
+        green.length=0;
 
         const timeTaken=performance.now()-timeNow;
         tim.innerText=`${timeTaken/1000}s`;
-        
-        green.push(1);
+        let grey=Array(sorted.length).fill(0).map((e,i)=>i);
+        green.push(0); // grey.splice(0,1);
         for(let i=0;i<sorted.length;i++){
-            if(!running||(sorted[i-1]>sorted[i]))break;
-            green.push(i);
-            draw(sorted,max,red,green,cyan);
+            if(!checking||(sorted[i-1]>sorted[i]))break;
+            green.push(i); grey.splice(0,1);
+            draw(sorted,max,red,green,cyan,[i],grey);
             const freq=valueToFreq(sorted[i],min,max,...soundHerz);
             // if(sound)playTone(freq,delay);
             oscillator.frequency.value=freq;
             await new Promise(r=>setTimeout(r,delay));
         };
+        draw(sorted,max,red,green,cyan,[],[]);
 
         console.log(`stopped by ${running?"sort finish":"user action"}`);
 
@@ -244,11 +251,12 @@ async function startHandler(){
         // btn.disabled=false;
         running=false;
         btn.innerText="sort";
-        btn.onclick=old;
+        btn.onclick=clickHandler;
     }
 };
 async function stopHandler(){
     running=false;
+    checking=false;
     // try {
     //     ;
     // } catch (err) {
@@ -321,9 +329,11 @@ const barColors={
     access: "red",
     check: "green",
     write: "cyan",
+    highlight: "yellow",
+    invalid: "darkgrey",
 };
 
-function draw(arr=[1],largest=arr[0],redIndex=[],greenIndex=[],cyanIndex=[]){
+function draw(arr=[1],largest=arr[0],access=[],check=[],write=[],highlight=[],disabled=[]){
     ctx.fillStyle=barColors.background;
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
@@ -342,9 +352,11 @@ function draw(arr=[1],largest=arr[0],redIndex=[],greenIndex=[],cyanIndex=[]){
         ctx.beginPath();
         ctx.rect(x,y,barWidth,height);
         ctx.fillStyle=barColors.idle;
-        if(redIndex.includes(i))ctx.fillStyle=barColors.access;
-        if(greenIndex.includes(i))ctx.fillStyle=barColors.check;
-        if(cyanIndex.includes(i))ctx.fillStyle=barColors.write;
+        ;;;; if(write.includes(i))ctx.fillStyle=barColors.write;
+        else if(access.includes(i))ctx.fillStyle=barColors.access;
+        else if(highlight.includes(i))ctx.fillStyle=barColors.highlight;
+        else if(check.includes(i))ctx.fillStyle=barColors.check;
+        else if(disabled.includes(i))ctx.fillStyle=barColors.invalid;
         ctx.fill();
     };
 };
@@ -416,6 +428,8 @@ barColors.idle=startOptions.get("idle-color")||barColors.idle;
 barColors.access=startOptions.get("access-color")||barColors.access;
 barColors.check=startOptions.get("check-color")||barColors.check;
 barColors.write=startOptions.get("write-color")||barColors.write;
+barColors.highlight=startOptions.get("highlight-color")||barColors.highlight;
+barColors.invalid=startOptions.get("disabled-color")||barColors.invalid;
 
 sel.onchange();
 window.draw=draw;
@@ -441,6 +455,7 @@ await new Promise(r=>setTimeout(r,2000));
     while(true){
         const delay=parseFloat(del.value);
         await finish;
+        // btn.onclick=startHandler;
         await new Promise(r=>setTimeout(r,delay*2));
         if(!running&&aut.checked)await new Promise(r=>setTimeout(r,1500));
         if(!running&&aut.checked)finish=startHandler();
