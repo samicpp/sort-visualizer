@@ -36,7 +36,7 @@ export const countSortDebug = new class countSortDebug {
     async get(name) { return this.workArr[name]; }
     async set(name, value) { return this.workArr[name] = value; }
     async number(arr) {
-        const narr = this.workArr = [...arr], sorted = new Array(narr.length);
+        const narr = this.workArr = [...arr], sorted = new Array(narr.length), warr = [...arr];
         let max = await this.get(0);
         for (const e of narr) {
             //const e=await this.get(i);
@@ -55,17 +55,16 @@ export const countSortDebug = new class countSortDebug {
         }
         ;
         for (let i = narr.length - 1; i >= 0; i--) {
-            const v = await this.get(i);
-            sorted[count[v] - 1] = v;
+            const v = warr[i];
+            await this.set(count[v] - 1, v);
             count[v]--;
             await this.next();
         }
         ;
-        for (const i of sorted) {
-            await this.set(i, sorted[i]);
-            await this.next();
-        }
-        ;
+        // for(const i of sorted){
+        //     await this.set(i,sorted[i]);
+        //     await this.next();
+        // };
         return this.workArr;
     }
 };

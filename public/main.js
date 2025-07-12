@@ -7,6 +7,7 @@ window.sort=sort;
 const canvas=document.querySelector("canvas");
 const view=document.querySelector(".view").children[0];
 const startOptions=new URL(location.href).searchParams;
+const icn=document.querySelector("link[rel=icon]");
 const [inp,_br0,gsm,gna,gbt,_br5,sel,met,btn,_br1,del/*,_br6,fas*/,_br2,acc,_br3,sou,_br4,aut,_br7,shf,sht,_br8,rsr,_br9,fwf,_br10]=document.querySelector(".input").children;
 const [tim,_br6,spa]=document.querySelector(".view").children;
 
@@ -152,6 +153,7 @@ async function startHandler(){
                 const freq=valueToFreq(v,min,max,...soundHerz);
                 // if(sound)playTone(freq,delay);
                 oscillator.frequency.value=freq;
+                // await new Promise(r=>setTimeout(r,delay));
                 return v;
             };
             sort[mode+"Debug"].next=async function(){
@@ -384,6 +386,14 @@ function or(x,y){
     if(x!=null)return x;
     return y;
 };
+async function updateIconLoop(delay=100){
+    let last="";
+    while(true){
+        URL.revokeObjectURL(last);
+        canvas.toBlob(b=>last=icn.href=(URL.createObjectURL(b)));
+        await new Promise(r=>setTimeout(r,delay));
+    }
+};
 
 sel.value=startOptions.get("list")||sel.value;
 met.value=startOptions.get("sort")||met.value;
@@ -421,15 +431,20 @@ if(strToBool(startOptions.get("fullscreen"))){
     canvas.style.width="100%";
     canvas.style.height="100%";
 };
+if(startOptions.get("icon-refresh-rate")){
+    updateIconLoop(parseInt(startOptions.get("icon-refresh-rate")));
+};
 
 await new Promise(r=>setTimeout(r,2000));
 
-while(true){
-    const delay=parseFloat(del.value);
-    await finish;
-    await new Promise(r=>setTimeout(r,delay*2));
-    if(!running&&aut.checked)await new Promise(r=>setTimeout(r,1500));
-    if(!running&&aut.checked)finish=startHandler();
-}
+!async function(){
+    while(true){
+        const delay=parseFloat(del.value);
+        await finish;
+        await new Promise(r=>setTimeout(r,delay*2));
+        if(!running&&aut.checked)await new Promise(r=>setTimeout(r,1500));
+        if(!running&&aut.checked)finish=startHandler();
+    };
+}();
 
 

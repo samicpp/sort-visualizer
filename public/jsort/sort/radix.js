@@ -58,7 +58,7 @@ export const radixSortDebug = new class RadixSortDebug {
     async get(i) { return this.workArr[i]; }
     async set(i, val) { return this.workArr[i] = val; }
     async #nSort(_arr, exp = 1) {
-        const arr = [];
+        const arr = [], warr = [...this.workArr];
         const count = Array(this.base).fill(0);
         for (let i = 0; i < this.workArr.length; i++) {
             let item = await this.get(i);
@@ -70,17 +70,17 @@ export const radixSortDebug = new class RadixSortDebug {
         for (let i = 1; i < this.base; i++)
             count[i] += count[i - 1];
         for (let i = this.workArr.length - 1; i >= 0; i--) {
-            const d = Math.floor(this.workArr[i] / exp) % this.base;
+            const d = Math.floor(warr[i] / exp) % this.base;
             const si = --count[d];
-            arr[si] = await this.get(i);
+            // arr[si] = await this.get(i);
+            await this.set(si, warr[i]);
             await this.next();
         }
         ;
-        for (let i in arr) {
-            await this.set(i, arr[i]);
-            await this.next();
-        }
-        ;
+        // for(let i in arr){
+        //     await this.set(i,arr[i]);
+        //     await this.next();
+        // };
     }
     async number(arr) {
         let sorted = [...arr];

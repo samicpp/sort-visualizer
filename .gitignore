@@ -1,5 +1,6 @@
 ### custom
 /_tmp/*
+/node_modules
 
 # Compiled class file
 #*.class
