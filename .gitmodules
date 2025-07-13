@@ -1,3 +1,7 @@
 [submodule "sorting-algorithms"]
 	path = sorting-algorithms
 	url = https://github.com/samicpp/sorting-algorithms.git
+
+[submodule "static-serve"]
+	path = static-serve
+	url = https://github.com/samicpp/static-serve.git
